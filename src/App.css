@@ -1,38 +1,136 @@
-.App {
+html {
   text-align: center;
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #dddddd;
+  overflow: auto;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  margin: 3rem 0;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  background-color: #3b3a30;
+  color: white;
   display: flex;
   flex-direction: column;
+  width: 98%;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  margin-top: 2rem;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.App-content {
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: rem;
 }
 
 .App-link {
   color: #61dafb;
 }
+.login-section {
+  cursor: pointer;
+  color: #3b3a30;
+}
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.notes-section,
+.todos-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #536964;
+  margin: 10px;
+  padding: 1rem;
+  width: 50%;
+}
+.todos-section {
+  background-color: #2f3b38;
+}
+ul,
+li {
+  text-align: center;
+  list-style: none;
+}
+
+.login-button {
+  background-color: white;
+  color: #3b3a30;
+  padding: 15px 10px;
+  font-weight: bold;
+}
+.login-button:hover,
+.login-button:focus {
+  background-color: rgb(41, 98, 45);
+  font-weight: bolder;
+  color: #ececeb;
+  padding: 15px 10px;
+}
+
+.add-button {
+  width: 90%;
+  background-color: white;
+  color: #3b3a30;
+  padding: 15px 10px;
+  font-weight: bold;
+  font-size: 20px;
+  margin: 5px 0;
+}
+
+.add-button:focus {
+  color: #ececeb;
+  padding: 15px 10px;
+}
+
+#add-sign {
+  font-size: 30px;
+}
+
+.input-section {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.input-section-text {
+  width: 80%;
+  background-color: white;
+  color: black;
+  padding: 10px 5px;
+  font-weight: bold;
+  font-size: 15px;
+  margin: 5px 0;
+}
+.input-section-button {
+  width: 20%;
+  margin: 5px 0 3px 0;
+  overflow-x: unset;
+  background-color: #dddddd;
+  color: black;
+  padding: 15px 10px;
+  font-weight: bold;
+}
+
+.input-section-button:hover,
+.input-section-button:focus {
+  width: 16%;
+  margin: 5px 0 3px 0;
+  background-color: green;
+  color: white;
+  padding: 15px 10px;
+  /* font-size: 13px; */
 }

@@ -9,7 +9,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Auth from "./components/Auth";
 import Notes from "./components/Notes";
 import Todos from "./components/Todos";
-import InputSection from './components/InputSections'
+import InputSection from "./components/InputSections";
+
+import { motion } from "framer-motion";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAekzbyEqn_W9q69gXotQpl6l-Vx1edGBo",
@@ -34,9 +36,17 @@ function App() {
   return (
     <div className="App">
       <Auth />
-      <div className="App-header">
+      <motion.div
+        className="App-header"
+        initial={{ y: -400 }}
+        animate={{
+          y: 0,
+          fontSize: "20px",
+        }}
+        transition={{ type: "tween", stiffness: 100, duration: 0.7 }}
+      >
         <h2>Notes App</h2>
-      </div>
+      </motion.div>
       <div className="App-content">
         <Notes />
         <Todos />

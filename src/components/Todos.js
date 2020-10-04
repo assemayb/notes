@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import InputSection from "./InputSections";
+import { motion } from 'framer-motion'
+import { todosVaraints } from '../utils/framerMotion'
 
 const todosData = [
   "this is the first test todo",
@@ -13,8 +15,12 @@ export default function Todos() {
     setRenderedComponent("text-input");
   };
   return (
-    <div className="todos-section">
-      <h1>The Todos</h1>
+    <motion.div className="todos-section"
+      variants={todosVaraints}
+      initial="hidden"
+      animate="visible"
+    >
+      <h1>Todos</h1>
       {renderedComponent === "btn" ? (
         <button className="add-button" onClick={handleAddNewInput}>
           <span id="add-sign">+</span> New Todo
@@ -25,6 +31,6 @@ export default function Todos() {
       {allTodos.map((todo, idx) => (
         <h3 key={idx}>{todo}</h3>
       ))}
-    </div>
+    </motion.div>
   );
 }

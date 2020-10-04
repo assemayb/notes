@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import InputSection from "./InputSections";
+import { motion } from "framer-motion";
+import { notesVaraints } from '../utils/framerMotion'
 
 const notesData = [
   "this is the first test note",
   "this is the second test note",
-
 ];
 
 export default function Notes() {
@@ -14,8 +15,13 @@ export default function Notes() {
     setRenderedComponent("text-input");
   };
   return (
-    <div className="notes-section">
-      <h1>The Notes</h1>
+    <motion.div
+      className="notes-section"
+      variants={notesVaraints}
+      initial="hidden"
+      animate="visible"
+    >
+      <h1>Notes</h1>
       {renderedComponent === "btn" ? (
         <button className="add-button" onClick={handleAddNewInput}>
           <span id="add-sign">+</span> New Note
@@ -26,6 +32,6 @@ export default function Notes() {
       {allNotes.map((note, idx) => (
         <h3 key={idx}>{note}</h3>
       ))}
-    </div>
+    </motion.div>
   );
 }

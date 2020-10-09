@@ -139,6 +139,44 @@ li {
   border: 3px solid wheat;
 }
 
+.output-item {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding: 1.2rem 0.5rem;
+  border: 3px solid wheat;
+  width: 90%;
+}
+.output-item:hover {
+  background: whitesmoke;
+  border: 3px solid cadetblue;
+  color: black;
+}
+
+.drop-target {
+  width: 90%;
+  margin: 10px auto;
+  background-color: whitesmoke;
+  color: black;
+}
+.hovered-btns {
+  display: flex;
+  justify-content: center;
+}
+
+.hovered-btn {
+  width: 40%;
+  font-size: 20px;
+  padding: 1.2rem 0.5rem;
+  margin-right: 5px;
+  color: #ececeb;
+  font-weight: bold;
+  background-color: rgb(31, 54, 56);
+}
+
+.hovered-btn:focus {  
+  color: #2db620;
+}
+
 @media only screen and (max-width: 600px) {
   .input-section-text {
     width: 60%;
@@ -148,5 +186,19 @@ li {
   .input-section-button:hover,
   .input-section-button:focus {
     width: 40%;
+  }
+
+  .App-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .notes-section,
+  .todos-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+    width: 90%;
   }
 }

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import InputSection from "./InputSections";
-import { motion } from 'framer-motion'
-import { todosVaraints } from '../utils/framerMotion'
+import DropItem from './DropItem';
+import { motion } from "framer-motion";
+import { todosVaraints } from "../utils/framerMotion";
 
 const todosData = [
   "this is the first test todo",
@@ -15,7 +16,8 @@ export default function Todos() {
     setRenderedComponent("text-input");
   };
   return (
-    <motion.div className="todos-section"
+    <motion.div
+      className="todos-section"
       variants={todosVaraints}
       initial="hidden"
       animate="visible"
@@ -26,10 +28,13 @@ export default function Todos() {
           <span id="add-sign">+</span> New Todo
         </button>
       ) : (
-        <InputSection setAllTodos={setAllTodos} />
+        <InputSection item="todos" setAllTodos={setAllTodos} />
       )}
+      <DropItem item="todo"/>
       {allTodos.map((todo, idx) => (
-        <h3 key={idx}>{todo}</h3>
+        <div key={idx} className="output-item">
+          <h3>{todo}</h3>
+        </div>
       ))}
     </motion.div>
   );

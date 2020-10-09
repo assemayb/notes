@@ -30,7 +30,6 @@ export const firestore = firebase.firestore();
 
 function App() {
   const [user] = useAuthState(auth);
-
   // TODO: change the name of the login comp to Auth;
 
   return (

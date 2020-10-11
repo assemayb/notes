@@ -3,11 +3,11 @@ import InputSection from "./InputSections";
 import DropItem from "./DropItem";
 import { motion } from "framer-motion";
 import { notesVaraints } from "../utils/framerMotion";
+import { data } from "../mockData";
+import Item from "./Item";
+import { useEffect } from "react";
 
-const notesData = [
-  "this is the first test note",
-  "this is the second test note",
-];
+const notesData = data.filter((item) => item.type === "note");
 
 export default function Notes() {
   const [allNotes, setAllNotes] = useState(notesData);
@@ -15,24 +15,35 @@ export default function Notes() {
   const [hoverOptions, setHoverOptions] = useState({
     hoveredItemIndex: -1,
   });
+  const [editOptions, setEditOptions] = useState({
+    isAllowed: false,
+    itemIndex: "-1",
+  });
 
   const handleAddNewInput = () => {
     setRenderedComponent("text-input");
   };
+
+  // For the hovering effect
   const handleMouseEnter = (event, itemIndex) => {
-    console.log("in", itemIndex);
     setHoverOptions({ ...hoverOptions, hoveredItemIndex: itemIndex });
   };
   const handleMouseLeave = (event, itemIndex) => {
-    console.log("out", itemIndex);
     setHoverOptions({ hoveredItemIndex: -1 });
   };
-  const editItem = (itemIndex) => {
-    console.log(itemIndex);
+
+  const editItem = (itemIdx) => {
+    setEditOptions({ isAllowed: false, itemIndex: "-1" });
+    if (itemIdx !== editOptions.itemIndex) {
+      setTimeout(() => {
+        setEditOptions({ isAllowed: true, itemIndex: itemIdx });
+      }, 150);
+    }
   };
-  const deleteItem = (itemIndex) => {
-    console.log(itemIndex);
-    const notes = allNotes.filter((_, index) => index !== itemIndex);
+
+  const deleteItem = (itemIdx) => {
+    console.log(itemIdx);
+    const notes = allNotes.filter((_, index) => index !== itemIdx);
     setAllNotes(notes);
   };
 
@@ -44,12 +55,24 @@ export default function Notes() {
       animate="visible"
     >
       <h1>Notes</h1>
-      {renderedComponent === "btn" ? (
+      {renderedComponent === "btn" && !editOptions.isAllowed ? (
         <button className="add-button" onClick={handleAddNewInput}>
           <span id="add-sign">+</span> New Note
         </button>
+      ) : renderedComponent === "btn" && editOptions.isAllowed ? (
+        <InputSection
+          item="edit"
+          allNotes={allNotes}
+          editOptions={editOptions}
+          setRenderedComponentForEdit={setRenderedComponent}
+          setEditOptions={setEditOptions}
+        />
       ) : (
-        <InputSection item="notes" setAllNotes={setAllNotes} />
+        <InputSection
+          item="notes"
+          setAllNotes={setAllNotes}
+          setRenderedComponent={setRenderedComponent}
+        />
       )}
       {allNotes.map((note, idx) => (
         <div
@@ -59,10 +82,14 @@ export default function Notes() {
           onMouseLeave={(e) => handleMouseLeave(e, idx)}
         >
           <div>
-            {hoverOptions.hoveredItemIndex === idx ? (
+            {hoverOptions.hoveredItemIndex === idx &&
+            renderedComponent === "btn" ? (
               <div>
                 <div className="hovered-btns">
-                  <button onClick={() => editItem(idx)} className="hovered-btn">
+                  <button
+                    onClick={(e) => editItem(idx)}
+                    className="hovered-btn"
+                  >
                     edit
                   </button>
                   <button
@@ -74,7 +101,7 @@ export default function Notes() {
                 </div>
               </div>
             ) : (
-              <h3>{note}</h3>
+              <Item data={note} />
             )}
           </div>
         </div>

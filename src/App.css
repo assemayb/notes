@@ -1,9 +1,10 @@
-html {
+body, html {
   text-align: center;
   max-width: 1000px;
   margin: 0 auto;
   background: #dddddd;
   overflow: auto;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 .App {
   display: flex;
@@ -11,7 +12,7 @@ html {
   align-items: center;
   text-align: center;
   justify-content: center;
-  margin: 3rem 0;
+  margin: 2rem 3rem;
 }
 
 .App-header {
@@ -19,11 +20,9 @@ html {
   color: white;
   display: flex;
   flex-direction: column;
-  width: 98%;
+  width: 83%;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
   margin-top: 2rem;
   margin-left: 10px;
   margin-right: 10px;
@@ -35,8 +34,8 @@ html {
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-  width: 100%;
-  margin-top: rem;
+  width: 85%;
+  margin-top: 0.4rem;
 }
 
 .App-link {
@@ -55,7 +54,7 @@ html {
   align-items: center;
   background-color: #536964;
   margin: 10px;
-  padding: 1rem;
+  padding: 0.5rem 1rem ;
   width: 50%;
 }
 .todos-section {
@@ -119,12 +118,14 @@ li {
 .input-section-button {
   width: 14%;
   margin: 5px 0 5px 0;
-  overflow-x: unset;
   background-color: #dddddd;
   color: black;
   padding: 15px 10px;
   font-weight: 900;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .input-section-button:hover,
@@ -140,20 +141,20 @@ li {
 }
 
 .output-item {
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  padding: 1.2rem 0.5rem;
+  margin-top: 0.8rem;
+  margin-bottom: 0.5rem;
+  padding: 0.4rem 0.2rem;
   border: 3px solid wheat;
   width: 90%;
 }
 .output-item:hover {
   background: whitesmoke;
-  border: 3px solid cadetblue;
+  border: 3px solid rgb(113, 205, 209);
   color: black;
 }
 
 .drop-target {
-  width: 90%;
+  width: 40%;
   margin: 10px auto;
   background-color: whitesmoke;
   color: black;
@@ -161,11 +162,12 @@ li {
 .hovered-btns {
   display: flex;
   justify-content: center;
+  opacity: 0.6;
 }
 
 .hovered-btn {
   width: 40%;
-  font-size: 20px;
+  font-size: 15px;
   padding: 1.2rem 0.5rem;
   margin-right: 5px;
   color: #ececeb;

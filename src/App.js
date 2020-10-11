@@ -30,8 +30,6 @@ export const firestore = firebase.firestore();
 
 function App() {
   const [user] = useAuthState(auth);
-  // TODO: change the name of the login comp to Auth;
-
   return (
     <div className="App">
       <Auth />
@@ -44,7 +42,7 @@ function App() {
         }}
         transition={{ type: "tween", stiffness: 100, duration: 0.7 }}
       >
-        <h2>Notes App</h2>
+        <h3>Notes App</h3>
       </motion.div>
       <div className="App-content">
         <Notes />

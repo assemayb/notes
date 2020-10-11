@@ -1,16 +1,50 @@
-import { useState } from "react";
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-export default function InputSections({ item, setAllTodos, setAllNotes }) {
+export default function InputSections({
+  item,
+  setAllTodos,
+  allNotes,
+  setAllNotes,
+  editOptions,
+  setRenderedComponent,
+  setRenderedComponentForEdit,
+  setEditOptions,
+}) {
   const [textVal, setTextVal] = useState("");
+  function checkEditOpsExist() {
+    if (editOptions) {
+      return editOptions.itemIndex;
+    }
+    return -1;
+  }
+  const [itemToEditIdx, setItemToEditIdx] = useState(checkEditOpsExist);
+
   const handleAddText = () => {
     const newText = textVal;
+    let newItem;
     if (item === "notes") {
-      console.log("adding to the notes");
-      setAllNotes((oldNotes) => [...oldNotes, newText]);
+      newItem = {
+        id: Math.ceil(Math.random() * 1000),
+        type: "note",
+        text: newText,
+      };
+      setAllNotes((oldNotes) => [...oldNotes, newItem]);
+      setRenderedComponent("btn");
+    } else if (item === "edit") {
+      const { itemIndex } = editOptions;
+      const noteToEditIndex = allNotes.findIndex(
+        (note, idx) => idx === itemIndex
+      );
+      allNotes[noteToEditIndex].text = newText;
+      setRenderedComponentForEdit("btn");
+      setEditOptions(false);
     } else {
-      console.log("Adding to todos");
-      setAllTodos((oldTodos) => [...oldTodos, newText]);
+      newItem = {
+        id: Math.ceil(Math.random() * 1000),
+        type: "todo",
+        text: newText,
+      };
+      setAllTodos((oldTodos) => [...oldTodos, newItem]);
     }
     setTextVal("");
   };
@@ -19,7 +53,11 @@ export default function InputSections({ item, setAllTodos, setAllNotes }) {
       <input
         className="input-section-text"
         type="text"
-        placeholder="type something..."
+        placeholder={
+          item == "edit"
+            ? `edit item ${itemToEditIdx} here..`
+            : "type something..."
+        }
         value={textVal}
         onChange={(e) => setTextVal(e.target.value)}
       />
@@ -28,7 +66,7 @@ export default function InputSections({ item, setAllTodos, setAllNotes }) {
         className="input-section-button"
         onClick={handleAddText}
       >
-        add
+        {item === "edit" ? "save" : "add"}
       </button>
     </div>
   );

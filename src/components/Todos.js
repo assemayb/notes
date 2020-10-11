@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import InputSection from "./InputSections";
-import DropItem from './DropItem';
+import DropItem from "./DropItem";
 import { motion } from "framer-motion";
+import { data } from "../mockData";
 import { todosVaraints } from "../utils/framerMotion";
+import Item from "./Item";
 
-const todosData = [
-  "this is the first test todo",
-  "this is the second test todo",
-];
+const todosData = data.filter((item) => item.type === "todo");
+console.log(todosData);
 
 export default function Todos() {
   const [allTodos, setAllTodos] = useState(todosData);
@@ -15,8 +15,10 @@ export default function Todos() {
   const handleAddNewInput = () => {
     setRenderedComponent("text-input");
   };
+  const todosSectionRef = useRef();
   return (
     <motion.div
+      ref={todosSectionRef}
       className="todos-section"
       variants={todosVaraints}
       initial="hidden"
@@ -30,12 +32,17 @@ export default function Todos() {
       ) : (
         <InputSection item="todos" setAllTodos={setAllTodos} />
       )}
-      <DropItem item="todo"/>
       {allTodos.map((todo, idx) => (
-        <div key={idx} className="output-item">
-          <h3>{todo}</h3>
-        </div>
+        <motion.div
+          key={idx}
+          className="output-item"
+          drag
+          dragConstraints={todosSectionRef}
+        >
+          <Item data={todo} />
+        </motion.div>
       ))}
+      <DropItem />
     </motion.div>
   );
 }

@@ -1,16 +1,35 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-function DropItem() {
+function DropItem({ setDropItemPos }) {
+  const [isHoverOver, setIsHoveredOver] = useState(false)
   const itemRef = useRef();
-  useEffect(() => {
-    console.log(itemRef.current.getBoundingClientRect());
-  }, []);
 
+  const handleDragEnter = (e) => {
+    console.log("drag enter")
+  }
+  const handleDragOver = (e) => {
+    console.log("something is being dragged over me");
+    setIsHoveredOver(true)
+  };
+  const handleDragExit = (e) => {
+    console.log("drag exit")
+    setIsHoveredOver(false)
+  }
   return (
-    <motion.div ref={itemRef} className="drop-target">
+    <div
+      style={{
+        backgroundColor: isHoverOver && "cadetBlue" 
+      }}
+      ref={itemRef}
+      className="drop-target"
+      onDragEnter={handleDragEnter}
+      onDragOverCapture={handleDragOver}
+      onDragExit={handleDragExit}
+
+    >
       <h4>Drag here to to mark as done </h4>
-    </motion.div>
+    </div>
   );
 }
 export default DropItem;

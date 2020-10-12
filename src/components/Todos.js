@@ -7,7 +7,6 @@ import { todosVaraints } from "../utils/framerMotion";
 import Item from "./Item";
 
 const todosData = data.filter((item) => item.type === "todo");
-console.log(todosData);
 
 export default function Todos() {
   const [allTodos, setAllTodos] = useState(todosData);
@@ -15,7 +14,10 @@ export default function Todos() {
   const handleAddNewInput = () => {
     setRenderedComponent("text-input");
   };
+  const [dropItemPos, setDropItemPos] = useState({});
   const todosSectionRef = useRef();
+  const itemRef = useRef();
+
   return (
     <motion.div
       ref={todosSectionRef}
@@ -35,14 +37,14 @@ export default function Todos() {
       {allTodos.map((todo, idx) => (
         <motion.div
           key={idx}
+          ref={itemRef}
           className="output-item"
-          drag
-          dragConstraints={todosSectionRef}
+          drag          
         >
           <Item data={todo} />
         </motion.div>
       ))}
-      <DropItem />
+      <DropItem setDropItemPos={setDropItemPos} />
     </motion.div>
   );
 }

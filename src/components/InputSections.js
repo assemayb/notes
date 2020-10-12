@@ -10,7 +10,6 @@ export default function InputSections({
   setRenderedComponentForEdit,
   setEditOptions,
 }) {
-  const [textVal, setTextVal] = useState("");
   function checkEditOpsExist() {
     if (editOptions) {
       return editOptions.itemIndex;
@@ -18,6 +17,12 @@ export default function InputSections({
     return -1;
   }
   const [itemToEditIdx, setItemToEditIdx] = useState(checkEditOpsExist);
+  const [textVal, setTextVal] = useState(() => {
+    if(itemToEditIdx !== -1) {
+      return editOptions.itemPrevText
+    }
+    return ""
+  });
 
   const handleAddText = () => {
     const newText = textVal;

@@ -3,8 +3,8 @@ body, html {
   max-width: 1000px;
   margin: 0 auto;
   background: #dddddd;
-  overflow: auto;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  overflow-y: auto;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 .App {
   display: flex;
@@ -52,7 +52,7 @@ body, html {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #536964;
+  background-color: #414e4b;
   margin: 10px;
   padding: 0.5rem 1rem ;
   width: 50%;
@@ -78,6 +78,7 @@ li {
   font-weight: bolder;
   color: #ececeb;
   padding: 15px 10px;
+  transition-duration: 0.4s;
 }
 
 .add-button {
@@ -88,6 +89,12 @@ li {
   font-weight: bold;
   font-size: 20px;
   margin: 5px 0;
+}
+
+.add-button:hover {
+  transition-duration: 0.3s;
+  background-color: #205d4a;
+  color: white;
 }
 
 .add-button:focus {
@@ -130,6 +137,7 @@ li {
 
 .input-section-button:hover,
 .input-section-button:focus {
+  transition: 0.3s;
   width: 16%;
   margin: 5px 0 5px 0;
   background-color: green;
@@ -148,6 +156,7 @@ li {
   width: 90%;
 }
 .output-item:hover {
+  /* transition: 0.4s; */
   background: whitesmoke;
   border: 3px solid rgb(113, 205, 209);
   color: black;
@@ -161,22 +170,26 @@ li {
 }
 .hovered-btns {
   display: flex;
-  justify-content: center;
-  opacity: 0.6;
+  justify-content: space-around;
 }
 
 .hovered-btn {
   width: 40%;
+  opacity: 0.9;
   font-size: 15px;
   padding: 1.2rem 0.5rem;
   margin-right: 5px;
   color: #ececeb;
   font-weight: bold;
-  background-color: rgb(31, 54, 56);
+  background-color: rgb(16, 56, 59);
 }
 
 .hovered-btn:focus {  
-  color: #2db620;
+  color: #277d1f;
+}
+.hovered-btn:hover {  
+  color: #20b6a0;
+  transition: 0.25s;
 }
 
 @media only screen and (max-width: 600px) {

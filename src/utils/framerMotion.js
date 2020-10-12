@@ -20,6 +20,8 @@ export const todosVaraints = {
   },
   visible: {
     x: 0,
+    opacity: 1,
+
     transition: {
       ease: "easeIn",
     },

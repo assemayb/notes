@@ -18,6 +18,7 @@ export default function Notes() {
   const [editOptions, setEditOptions] = useState({
     isAllowed: false,
     itemIndex: "-1",
+    itemPrevText: "",
   });
 
   const handleAddNewInput = () => {
@@ -32,17 +33,20 @@ export default function Notes() {
     setHoverOptions({ hoveredItemIndex: -1 });
   };
 
-  const editItem = (itemIdx) => {
+  const editItem = (itemIdx, itemText) => {
     setEditOptions({ isAllowed: false, itemIndex: "-1" });
     if (itemIdx !== editOptions.itemIndex) {
       setTimeout(() => {
-        setEditOptions({ isAllowed: true, itemIndex: itemIdx });
+        setEditOptions({
+          isAllowed: true,
+          itemIndex: itemIdx,
+          itemPrevText: itemText,
+        });
       }, 150);
     }
   };
 
   const deleteItem = (itemIdx) => {
-    console.log(itemIdx);
     const notes = allNotes.filter((_, index) => index !== itemIdx);
     setAllNotes(notes);
   };
@@ -87,12 +91,13 @@ export default function Notes() {
               <div>
                 <div className="hovered-btns">
                   <button
-                    onClick={(e) => editItem(idx)}
+                    onClick={(e) => editItem(idx, note.text)}
                     className="hovered-btn"
                   >
                     edit
                   </button>
                   <button
+                    disabled={editOptions.isAllowed}
                     onClick={() => deleteItem(idx)}
                     className="hovered-btn"
                   >

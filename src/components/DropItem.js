@@ -1,32 +1,34 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { itemTypes } from "../dnd/items";
+import { useDrop } from "react-dnd";
+
+import { useItemProvider } from "./Todos";
 
 function DropItem({ setDropItemPos }) {
-  const [isHoverOver, setIsHoveredOver] = useState(false)
-  const itemRef = useRef();
+  const markItemAsDone = useItemProvider();
+  const [{ isOver, didDrop, dropResult }, dropRef] = useDrop({
+    accept: itemTypes.TODO,
+    drop: (item, monitor) => {
+      markItemAsDone(item.id);
+    },
+    collect: (monitor) => ({
+      didDrop: monitor.didDrop(),
+      dropResult: monitor.getDropResult(),
+      isOver: monitor.isOver(),
+    }),
+  });
 
-  const handleDragEnter = (e) => {
-    console.log("drag enter")
-  }
-  const handleDragOver = (e) => {
-    console.log("something is being dragged over me");
-    setIsHoveredOver(true)
-  };
-  const handleDragExit = (e) => {
-    console.log("drag exit")
-    setIsHoveredOver(false)
-  }
   return (
     <div
-      style={{
-        backgroundColor: isHoverOver && "cadetBlue" 
-      }}
-      ref={itemRef}
       className="drop-target"
-      onDragEnter={handleDragEnter}
-      onDragOverCapture={handleDragOver}
-      onDragExit={handleDragExit}
-
+      ref={dropRef}
+      style={{
+        backgroundColor: isOver && "cadetBlue",
+        border: isOver && "5px solid wheat",
+        width: isOver && "95%",
+        height: isOver && "100px",
+      }}
     >
       <h4>Drag here to to mark as done </h4>
     </div>

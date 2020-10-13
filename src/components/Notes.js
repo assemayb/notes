@@ -84,6 +84,8 @@ export default function Notes() {
           className="output-item"
           onMouseEnter={(e) => handleMouseEnter(e, idx)}
           onMouseLeave={(e) => handleMouseLeave(e, idx)}
+          onTouchStart={(e) => handleMouseEnter(e, idx)}
+          onTouchEnd={(e) => handleMouseLeave(e, idx)}
         >
           <div>
             {hoverOptions.hoveredItemIndex === idx &&
@@ -106,7 +108,7 @@ export default function Notes() {
                 </div>
               </div>
             ) : (
-              <Item data={note} />
+              <h4>{note.text}</h4>
             )}
           </div>
         </div>

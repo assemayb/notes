@@ -18,10 +18,10 @@ export default function InputSections({
   }
   const [itemToEditIdx, setItemToEditIdx] = useState(checkEditOpsExist);
   const [textVal, setTextVal] = useState(() => {
-    if(itemToEditIdx !== -1) {
-      return editOptions.itemPrevText
+    if (itemToEditIdx !== -1) {
+      return editOptions.itemPrevText;
     }
-    return ""
+    return "";
   });
 
   const handleAddText = () => {
@@ -48,7 +48,9 @@ export default function InputSections({
         id: Math.ceil(Math.random() * 1000),
         type: "todo",
         text: newText,
+        state: "in",
       };
+      console.log(newItem);
       setAllTodos((oldTodos) => [...oldTodos, newItem]);
     }
     setTextVal("");

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 
+import firebase from "firebase/app";
+import { auth, firestore } from "../App";
+
 export default function InputSections({
   item,
   setAllTodos,
@@ -9,6 +12,7 @@ export default function InputSections({
   setRenderedComponent,
   setRenderedComponentForEdit,
   setEditOptions,
+  userName,
 }) {
   function checkEditOpsExist() {
     if (editOptions) {
@@ -16,15 +20,17 @@ export default function InputSections({
     }
     return -1;
   }
-  const [itemToEditIdx, setItemToEditIdx] = useState(checkEditOpsExist);
+  const [itemToEditIdx] = useState(checkEditOpsExist);
   const [textVal, setTextVal] = useState(() => {
     if (itemToEditIdx !== -1) {
       return editOptions.itemPrevText;
     }
     return "";
   });
+  const [currentUser] = useState(userName);
 
-  const handleAddText = () => {
+  const dbRef = firestore.collection("notes");
+  const handleAddText = async () => {
     const newText = textVal;
     let newItem;
     if (item === "notes") {
@@ -33,7 +39,13 @@ export default function InputSections({
         type: "note",
         text: newText,
       };
-      setAllNotes((oldNotes) => [...oldNotes, newItem]);
+      await dbRef.add({
+        text: JSON.stringify(newText),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        userName: currentUser,
+        isTodo: false,
+        isChecked: false,
+      });
       setRenderedComponent("btn");
     } else if (item === "edit") {
       const { itemIndex } = editOptions;
@@ -44,14 +56,13 @@ export default function InputSections({
       setRenderedComponentForEdit("btn");
       setEditOptions(false);
     } else {
-      newItem = {
-        id: Math.ceil(Math.random() * 1000),
-        type: "todo",
-        text: newText,
-        state: "in",
-      };
-      console.log(newItem);
-      setAllTodos((oldTodos) => [...oldTodos, newItem]);
+      await dbRef.add({
+        text: JSON.stringify(newText),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        userName: currentUser,
+        isTodo: true,
+        isChecked: false,
+      });
     }
     setTextVal("");
   };

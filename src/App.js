@@ -1,17 +1,17 @@
 import "./App.css";
-import React from "react";
+import React, { useState, useEffect } from "react";
+
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/analytics";
-
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+
+import { motion } from "framer-motion";
 import Auth from "./components/Auth";
 import Notes from "./components/Notes";
 import Todos from "./components/Todos";
-import InputSection from "./components/InputSections";
-
-import { motion } from "framer-motion";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAekzbyEqn_W9q69gXotQpl6l-Vx1edGBo",
@@ -25,14 +25,38 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
 function App() {
   const [user] = useAuthState(auth);
+  const [userDoesExist, setUserDoesExist] = useState(false);
+  const [userName, setUserName] = useState("");
+
+  const notesDatabaseRef = firestore.collection("notes");
+  let query = notesDatabaseRef.where("userName", "==", userName);
+  const [data] = useCollectionData(query, { idField: "id" });
+
+  const [allData, setAllData] = useState([]);
+
+  useEffect(() => {
+    const changeUserState = () => {
+      if (user) {
+        setUserDoesExist(true);
+        setUserName(user.displayName.split(" ")[0]);
+      }
+    };
+    changeUserState();
+  }, [user]);
+
+  useEffect(() => {
+    setAllData(data);
+  }, [data]);
+
   return (
     <div className="App">
-      <Auth />
+      <Auth setUserDoesExist={setUserDoesExist} />
       <motion.div
         className="App-header"
         initial={{ y: -400 }}
@@ -44,10 +68,24 @@ function App() {
       >
         <h3>Notes App</h3>
       </motion.div>
-      <div className="App-content">
-        <Notes />
-        <Todos />
-      </div>
+      {allData ? (
+        <div className="App-content">
+          <Notes
+            userDoesExist={userDoesExist}
+            allData={allData}
+            userName={userName}
+          />
+          <Todos
+            userDoesExist={userDoesExist}
+            allData={allData}
+            userName={userName}
+          />
+        </div>
+      ) : (
+        <div className="loading-section">
+          <h4>loading......</h4>
+        </div>
+      )}
     </div>
   );
 }

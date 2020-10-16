@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
+import { motion } from 'framer-motion'
 import firebase from "firebase";
 import { auth } from "../App";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { motion } from 'framer-motion'
 
-export default function Auth() {
+export default function Auth({ setUserDoesExist }) {
   const [user] = useAuthState(auth);
   const signInAndLogOutWithGoogle = () => {
     if (!user) {
       const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(googleAuthProvider);
+    } else {
+      auth.signOut();
+      setUserDoesExist(false)
     }
-    auth.signOut();
   };
   return (
     <>

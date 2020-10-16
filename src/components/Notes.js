@@ -1,16 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InputSection from "./InputSections";
-import DropItem from "./DropItem";
 import { motion } from "framer-motion";
 import { notesVaraints } from "../utils/framerMotion";
-import { data } from "../mockData";
-import Item from "./Item";
-import { useEffect } from "react";
 
-const notesData = data.filter((item) => item.type === "note");
+import firebase from "firebase/app";
+import { firestore, auth } from "../App";
 
-export default function Notes() {
-  const [allNotes, setAllNotes] = useState(notesData);
+export default function Notes({ userDoesExist, allData, userName }) {
+  const [allNotes, setAllNotes] = useState([]);
   const [renderedComponent, setRenderedComponent] = useState("btn");
   const [hoverOptions, setHoverOptions] = useState({
     hoveredItemIndex: -1,
@@ -21,11 +18,19 @@ export default function Notes() {
     itemPrevText: "",
   });
 
+  useEffect(() => {
+    const filterNotesFromDB = () => {
+      const notes = allData.filter((item) => item.isTodo === false);
+      setAllNotes(notes);
+    };
+    filterNotesFromDB();
+  }, [allData]);
+
   const handleAddNewInput = () => {
     setRenderedComponent("text-input");
   };
 
-  // For the hovering effect
+  // For hovering effect
   const handleMouseEnter = (event, itemIndex) => {
     setHoverOptions({ ...hoverOptions, hoveredItemIndex: itemIndex });
   };
@@ -33,7 +38,10 @@ export default function Notes() {
     setHoverOptions({ hoveredItemIndex: -1 });
   };
 
-  const editItem = (itemIdx, itemText) => {
+  // database functions
+  const dbRef = firestore.collection("notes");
+  const editItem = (itemIdx, itemID, itemText) => {
+    console.log(itemID);
     setEditOptions({ isAllowed: false, itemIndex: "-1" });
     if (itemIdx !== editOptions.itemIndex) {
       setTimeout(() => {
@@ -46,9 +54,10 @@ export default function Notes() {
     }
   };
 
-  const deleteItem = (itemIdx) => {
-    const notes = allNotes.filter((_, index) => index !== itemIdx);
-    setAllNotes(notes);
+  const deleteItem = (itemID) => {
+    console.log(itemID);
+    // const notes = allNotes.filter((_, index) => index !== itemIdx);
+    // setAllNotes(notes);
   };
 
   return (
@@ -59,60 +68,63 @@ export default function Notes() {
       animate="visible"
     >
       <h1>Notes</h1>
-      {renderedComponent === "btn" && !editOptions.isAllowed ? (
-        <button className="add-button" onClick={handleAddNewInput}>
-          <span id="add-sign">+</span> New Note
-        </button>
-      ) : renderedComponent === "btn" && editOptions.isAllowed ? (
-        <InputSection
-          item="edit"
-          allNotes={allNotes}
-          editOptions={editOptions}
-          setRenderedComponentForEdit={setRenderedComponent}
-          setEditOptions={setEditOptions}
-        />
-      ) : (
-        <InputSection
-          item="notes"
-          setAllNotes={setAllNotes}
-          setRenderedComponent={setRenderedComponent}
-        />
-      )}
-      {allNotes.map((note, idx) => (
-        <div
-          key={idx}
-          className="output-item"
-          onMouseEnter={(e) => handleMouseEnter(e, idx)}
-          onMouseLeave={(e) => handleMouseLeave(e, idx)}
-          onTouchStart={(e) => handleMouseEnter(e, idx)}
-          onTouchEnd={(e) => handleMouseLeave(e, idx)}
-        >
-          <div>
-            {hoverOptions.hoveredItemIndex === idx &&
-            renderedComponent === "btn" ? (
+      {userDoesExist && (
+        <>
+          {renderedComponent === "btn" && !editOptions.isAllowed ? (
+            <button className="add-button" onClick={handleAddNewInput}>
+              <span id="add-sign">+</span> New Note
+            </button>
+          ) : renderedComponent === "btn" && editOptions.isAllowed ? (
+            <InputSection
+              item="edit"
+              allNotes={allNotes}
+              editOptions={editOptions}
+              setRenderedComponentForEdit={setRenderedComponent}
+              setEditOptions={setEditOptions}
+            />
+          ) : (
+            <InputSection
+              item="notes"
+              setAllNotes={setAllNotes}
+              setRenderedComponent={setRenderedComponent}
+              userName={userName}
+            />
+          )}
+          {allNotes.map((note, idx) => (
+            <div
+              key={idx}
+              className="note-output-item"
+              onMouseEnter={(e) => handleMouseEnter(e, idx)}
+              onMouseLeave={(e) => handleMouseLeave(e, idx)}
+              onTouchStart={(e) => handleMouseEnter(e, idx)}
+              onTouchEnd={(e) => handleMouseLeave(e, idx)}
+            >
               <div>
-                <div className="hovered-btns">
-                  <button
-                    onClick={(e) => editItem(idx, note.text)}
-                    className="hovered-btn"
-                  >
-                    edit
-                  </button>
-                  <button
-                    disabled={editOptions.isAllowed}
-                    onClick={() => deleteItem(idx)}
-                    className="hovered-btn"
-                  >
-                    delete
-                  </button>
-                </div>
+                {hoverOptions.hoveredItemIndex === idx &&
+                renderedComponent === "btn" ? (
+                  <div className="hovered-btns">
+                    <button
+                      onClick={(e) => editItem(idx, note.id, note.text)}
+                      className="hovered-btn"
+                    >
+                      edit
+                    </button>
+                    <button
+                      disabled={editOptions.isAllowed}
+                      onClick={() => deleteItem(note.id)}
+                      className="hovered-btn"
+                    >
+                      delete
+                    </button>
+                  </div>
+                ) : (
+                  <h4>{note.text}</h4>
+                )}
               </div>
-            ) : (
-              <h4>{note.text}</h4>
-            )}
-          </div>
-        </div>
-      ))}
+            </div>
+          ))}
+        </>
+      )}
     </motion.div>
   );
 }

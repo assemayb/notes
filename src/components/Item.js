@@ -9,11 +9,6 @@ const Item = ({ data }) => {
     },
     begin: (moniror) => {
       console.log(`item of id ${data.id} is being dragged`);
-      console.log(moniror.getSourceClientOffset());
-      console.log(moniror.getInitialClientOffset());
-    },
-    end: (item, monitor) => {
-      console.log(item.type);
     },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),

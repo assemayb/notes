@@ -21,12 +21,10 @@ html {
   color: white;
   display: flex;
   flex-direction: column;
-  width: 83%;
+  width: 85%;
   align-items: center;
   justify-content: center;
   margin-top: 2rem;
-  /* margin-left: 10px; */
-  margin-right: 10px;
 }
 
 .App-content {
@@ -54,12 +52,12 @@ html {
   justify-content: center;
   align-items: center;
   background-color: #414e4b;
-  margin: 10px;
   padding: 0.5rem 1rem;
   width: 50%;
 }
 .todos-section {
   background-color: #2f3b38;
+  margin-left:10px;
 }
 ul,
 li {
@@ -149,11 +147,11 @@ li {
   border: 3px solid wheat;
 }
 
-.output-item {
+.note-output-item, .output-item {
   margin-top: 0.8rem;
   margin-bottom: 0.5rem;
   padding: 0.4rem 0.2rem;
-  border: 3px solid wheat;
+  border: 1px solid wheat;
   width: 90%;
   overflow: auto;
 }
@@ -162,26 +160,33 @@ li {
   margin-top: 0.8rem;
   margin-bottom: 0.5rem;
   padding: 0.4rem 0.2rem;
-  border: 3px solid wheat;
   width: 90%;
-  overflow: auto;
 }
 .output-item:hover {
-  /* transition: 0.4s; */
   background: whitesmoke;
-  border: 3px solid rgb(113, 205, 209);
+  border: 1px solid rgb(129, 193, 197);
+  color: black;
+}
+.note-output-item:hover {
+  transition: 0.5s;
+  background: whitesmoke;
+  border: 1px solid rgb(113, 205, 209);
   color: black;
 }
 
 .drop-target {
   width: 40%;
   margin: 10px auto;
-  background-color: whitesmoke;
+  background-color: HoneyDew;
   color: black;
+  font-size: 15px;
+  padding: 0.5rem;
 }
 .hovered-btns {
   display: flex;
   justify-content: space-evenly;
+  padding: 0.3rem 0.1rem;
+
 }
 
 .hovered-btn {
@@ -226,5 +231,9 @@ li {
     justify-content: center;
     padding: 1rem;
     width: 90%;
+  }
+  .todos-section {
+    margin-left: 0;
+    margin-top:10px;
   }
 }

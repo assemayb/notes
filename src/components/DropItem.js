@@ -1,5 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import React from "react";
 import { itemTypes } from "../dnd/items";
 import { useDrop } from "react-dnd";
 
@@ -7,13 +6,13 @@ import { useItemProvider } from "./Todos";
 
 function DropItem({ setDropItemPos }) {
   const markItemAsDone = useItemProvider();
-  const [{ isOver, didDrop, dropResult }, dropRef] = useDrop({
+  const [{ isOver, dropResult }, dropRef] = useDrop({
     accept: itemTypes.TODO,
     drop: (item, monitor) => {
       markItemAsDone(item.id);
+      console.log(`item of id ${item.id} has been dropped`);
     },
     collect: (monitor) => ({
-      didDrop: monitor.didDrop(),
       dropResult: monitor.getDropResult(),
       isOver: monitor.isOver(),
     }),
@@ -24,13 +23,19 @@ function DropItem({ setDropItemPos }) {
       className="drop-target"
       ref={dropRef}
       style={{
-        backgroundColor: isOver && "cadetBlue",
-        border: isOver && "5px solid wheat",
+        backgroundColor: isOver && "Teal",
+        border: isOver && "2px solid wheat",
         width: isOver && "95%",
         height: isOver && "100px",
       }}
     >
-      <h4>Drag here to to mark as done </h4>
+      <h4
+        style={{
+          visibility: isOver && "hidden",
+        }}
+      >
+        Drag here to to mark as done{" "}
+      </h4>
     </div>
   );
 }

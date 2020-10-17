@@ -208,6 +208,34 @@ li {
   transition: 0.25s;
 }
 
+.loader-section {
+  margin-top: 8rem;
+}
+
+.loader-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.loader-item {
+  width: 30px;
+  height: 70px;
+  margin: 0 5px;
+}
+
+#first-item {
+ background: rgb(71, 93, 53);
+}
+
+#second-item {
+  background: rgb(51, 61, 44);
+}
+
+#third-item {
+  background: rgb(45, 52, 38);
+}
+
 @media only screen and (max-width: 600px) {
   .input-section-text {
     width: 60%;

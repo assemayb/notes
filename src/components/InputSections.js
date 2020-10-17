@@ -40,7 +40,7 @@ export default function InputSections({
         text: newText,
       };
       await dbRef.add({
-        text: JSON.stringify(newText),
+        text: newText,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         userName: currentUser,
         isTodo: false,
@@ -57,7 +57,7 @@ export default function InputSections({
       setEditOptions(false);
     } else {
       await dbRef.add({
-        text: JSON.stringify(newText),
+        text: newText,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         userName: currentUser,
         isTodo: true,

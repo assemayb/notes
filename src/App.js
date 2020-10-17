@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 import Auth from "./components/Auth";
 import Notes from "./components/Notes";
 import Todos from "./components/Todos";
+import CustomLoader from './components/CustomLoader'
 
 const firebaseConfig = {
   apiKey: "AIzaSyAekzbyEqn_W9q69gXotQpl6l-Vx1edGBo",
@@ -52,7 +53,7 @@ function App() {
 
   useEffect(() => {
     setAllData(data);
-  }, [data]);
+  }, [data, userDoesExist]);
 
   return (
     <div className="App">
@@ -82,9 +83,7 @@ function App() {
           />
         </div>
       ) : (
-        <div className="loading-section">
-          <h4>loading......</h4>
-        </div>
+          <CustomLoader />
       )}
     </div>
   );

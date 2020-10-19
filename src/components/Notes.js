@@ -3,7 +3,7 @@ import InputSection from "./InputSections";
 import { motion } from "framer-motion";
 import { notesVaraints } from "../utils/framerMotion";
 
-import firebase from "firebase/app";
+
 import { firestore, auth } from "../App";
 
 export default function Notes({ userDoesExist, allData, userName }) {
@@ -13,6 +13,7 @@ export default function Notes({ userDoesExist, allData, userName }) {
     hoveredItemIndex: -1,
   });
   const [editOptions, setEditOptions] = useState({
+    itemID: null,
     isAllowed: false,
     itemIndex: "-1",
     itemPrevText: "",
@@ -41,27 +42,38 @@ export default function Notes({ userDoesExist, allData, userName }) {
   // database functions
   const dbRef = firestore.collection("notes");
   const editItem = (itemIdx, itemID, itemText) => {
-    console.log(itemID);
-    setEditOptions({ isAllowed: false, itemIndex: "-1" });
-    if (itemIdx !== editOptions.itemIndex) {
-      setTimeout(() => {
+    setEditOptions({
+      itemID,
+      isAllowed: true,
+      itemIndex: itemIdx,
+      itemPrevText: itemText,
+    });
+  };
+
+  const deleteItem = async (itemID) => {
+    await dbRef.doc(itemID).delete().then(console.log("item deleted"));
+  };
+
+  const mainContainerClicked = (clickEvent) => {
+    if (
+      clickEvent.target.className !== "add-button" &&
+      clickEvent.target.tagName !== "INPUT" &&
+      clickEvent.target.tagName !== "BUTTON"
+    ) {
+      if (editOptions.isAllowed == true) {
         setEditOptions({
-          isAllowed: true,
-          itemIndex: itemIdx,
-          itemPrevText: itemText,
+          itemID: null,
+          isAllowed: false,
+          itemIndex: "-1",
+          itemPrevText: "",
         });
-      }, 150);
+      }
+      setRenderedComponent("btn");
     }
   };
-
-  const deleteItem = (itemID) => {
-    console.log(itemID);
-    // const notes = allNotes.filter((_, index) => index !== itemIdx);
-    // setAllNotes(notes);
-  };
-
   return (
     <motion.div
+      onClick={(e) => mainContainerClicked(e)}
       className="notes-section"
       variants={notesVaraints}
       initial="hidden"
@@ -77,15 +89,13 @@ export default function Notes({ userDoesExist, allData, userName }) {
           ) : renderedComponent === "btn" && editOptions.isAllowed ? (
             <InputSection
               item="edit"
-              allNotes={allNotes}
               editOptions={editOptions}
-              setRenderedComponentForEdit={setRenderedComponent}
               setEditOptions={setEditOptions}
+              setRenderedComponent={setRenderedComponent}
             />
           ) : (
             <InputSection
               item="notes"
-              setAllNotes={setAllNotes}
               setRenderedComponent={setRenderedComponent}
               userName={userName}
             />

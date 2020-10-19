@@ -1,44 +1,41 @@
 import React, { useState, useEffect } from "react";
 
 import firebase from "firebase/app";
-import { auth, firestore } from "../App";
-
+import { firestore } from "../App";
 export default function InputSections({
   item,
-  setAllTodos,
-  allNotes,
-  setAllNotes,
   editOptions,
   setRenderedComponent,
-  setRenderedComponentForEdit,
   setEditOptions,
   userName,
 }) {
-  function checkEditOpsExist() {
-    if (editOptions) {
-      return editOptions.itemIndex;
-    }
-    return -1;
-  }
-  const [itemToEditIdx] = useState(checkEditOpsExist);
-  const [textVal, setTextVal] = useState(() => {
-    if (itemToEditIdx !== -1) {
-      return editOptions.itemPrevText;
-    }
-    return "";
-  });
   const [currentUser] = useState(userName);
+  const [textVal, setTextVal] = useState("");
+
+  useEffect(() => {
+    return () => {
+      setRenderedComponent("btn");
+    };
+  }, [item]);
+
+  useEffect(() => {
+    if (editOptions) {
+      const { itemIndex, itemPrevText } = editOptions;
+      setTextVal(itemPrevText);
+      return () => {
+        setEditOptions({
+          isAllowed: false,
+          itemIndex,
+          itemPrevText: "",
+        });
+      };
+    }
+  }, [editOptions]);
 
   const dbRef = firestore.collection("notes");
   const handleAddText = async () => {
     const newText = textVal;
-    let newItem;
     if (item === "notes") {
-      newItem = {
-        id: Math.ceil(Math.random() * 1000),
-        type: "note",
-        text: newText,
-      };
       await dbRef.add({
         text: newText,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -46,15 +43,16 @@ export default function InputSections({
         isTodo: false,
         isChecked: false,
       });
-      setRenderedComponent("btn");
     } else if (item === "edit") {
-      const { itemIndex } = editOptions;
-      const noteToEditIndex = allNotes.findIndex(
-        (note, idx) => idx === itemIndex
-      );
-      allNotes[noteToEditIndex].text = newText;
-      setRenderedComponentForEdit("btn");
-      setEditOptions(false);
+      const { itemID, itemPrevText } = editOptions;
+      if (newText !== itemPrevText) {
+        await dbRef.doc(itemID).update({
+          text: newText,
+        });
+      }
+      setEditOptions({
+        isAllowed: false,
+      });
     } else {
       await dbRef.add({
         text: newText,
@@ -64,18 +62,14 @@ export default function InputSections({
         isChecked: false,
       });
     }
-    setTextVal("");
+    setRenderedComponent("btn");
   };
   return (
     <div className="input-section">
       <input
         className="input-section-text"
         type="text"
-        placeholder={
-          item == "edit"
-            ? `edit item ${itemToEditIdx} here..`
-            : "type something..."
-        }
+        placeholder="type something..."
         value={textVal}
         onChange={(e) => setTextVal(e.target.value)}
       />

@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import Auth from "./components/Auth";
 import Notes from "./components/Notes";
 import Todos from "./components/Todos";
-import CustomLoader from './components/CustomLoader'
+import CustomLoader from "./components/CustomLoader";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAekzbyEqn_W9q69gXotQpl6l-Vx1edGBo",
@@ -83,7 +83,7 @@ function App() {
           />
         </div>
       ) : (
-          <CustomLoader />
+        <CustomLoader />
       )}
     </div>
   );

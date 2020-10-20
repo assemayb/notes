@@ -57,7 +57,7 @@ function App() {
 
   return (
     <div className="App">
-      <Auth setUserDoesExist={setUserDoesExist} />
+      <Auth setUserDoesExist={setUserDoesExist}/>
       <motion.div
         className="App-header"
         initial={{ y: -400 }}

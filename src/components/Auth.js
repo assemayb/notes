@@ -9,7 +9,7 @@ export default function Auth({ setUserDoesExist }) {
   const signInAndLogOutWithGoogle = () => {
     if (!user) {
       const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(googleAuthProvider);
+      auth.signInWithRedirect(googleAuthProvider);
     } else {
       auth.signOut();
       setUserDoesExist(false);

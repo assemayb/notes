@@ -1,11 +1,12 @@
 {
   "description": "Notes App",
+  "author": "Assem",
+  "name": "note_app",
   "build": {
     "appId": "<com.your_app>"
   },
   "main": "public/electron.js",
   "homepage": "./",
-  "name": "Notes App",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -14,8 +15,6 @@
     "@testing-library/user-event": "^7.2.1",
     "concurrently": "^5.3.0",
     "cross-env": "^7.0.2",
-    "electron": "^10.1.4",
-    "electron-builder": "^22.9.1",
     "electron-is-dev": "^1.2.0",
     "framer-motion": "^2.7.7",
     "react": "^16.13.1",
@@ -24,6 +23,10 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",
     "wait-on": "^5.2.0"
+  },
+  "devDependencies": {
+    "electron": "^10.1.4",
+    "electron-builder": "^22.9.1"
   },
   "scripts": {
     "react-start": "react-scripts start",

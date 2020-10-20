@@ -42,6 +42,12 @@ function App() {
   const [allData, setAllData] = useState([]);
 
   useEffect(() => {
+    auth.getRedirectResult().then((result) => {
+      console.log(result.user);
+    });
+  }, []);
+  
+  useEffect(() => {
     const changeUserState = () => {
       if (user) {
         setUserDoesExist(true);
@@ -57,7 +63,7 @@ function App() {
 
   return (
     <div className="App">
-      <Auth setUserDoesExist={setUserDoesExist}/>
+      <Auth setUserDoesExist={setUserDoesExist} />
       <motion.div
         className="App-header"
         initial={{ y: -400 }}
